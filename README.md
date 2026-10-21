@@ -124,12 +124,16 @@ Expected response:
 
 | Method | Path | Description |
 |---|---|---|
-| GET | `/categories` | List attack categories |
-| POST | `/tests` | Start a test run, returns `{ "id": 1 }` |
-| GET | `/tests/{id}` | Progress and results of a run |
-| GET | `/tests/{id}/report` | Score, category breakdown and fixes |
+| GET | `/health` | System health check, returns `{ "status": "ok" }` |
+| GET | `/categories` | List attack categories (OWASP Top 10 LLM vectors) |
+| GET | `/attacks` | Full catalog of attack scenarios, severities, and objectives |
+| POST | `/tests` | Start an adversarial test run, returns `{ "id": 1, "total": 15 }` |
+| GET | `/tests` | Audit history of past security scans |
+| GET | `/tests/{id}` | Progress and real-time result stream of a run |
+| GET | `/tests/{id}/report` | Final risk score, category breakdown, evidence, and fixes |
 
-Interactive docs: http://localhost:8000/docs
+Interactive OpenAPI docs: http://localhost:8000/docs
+
 
 ---
 
