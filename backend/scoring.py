@@ -2,13 +2,14 @@
 
 
 def risk_label(score: float) -> str:
-    if score < 25:
+    if score <= 19:
         return "Low"
-    if score < 50:
+    if score <= 39:
         return "Medium"
-    if score < 75:
+    if score <= 69:
         return "High"
     return "Critical"
+
 
 
 def compute(results: list[dict]) -> dict:

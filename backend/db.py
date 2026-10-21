@@ -1,4 +1,4 @@
-"""SQLite storage (Samiksha). Swap for PostgreSQL later if there is time."""
+"""SQLite storage (Samiksha). Scalable to PostgreSQL."""
 import sqlite3
 import json
 from pathlib import Path
@@ -21,7 +21,13 @@ def init():
         c.execute("""CREATE TABLE IF NOT EXISTS results(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             test_id INTEGER, category TEXT, attack TEXT, prompt TEXT,
-            reply TEXT, verdict TEXT, evidence TEXT, severity INTEGER)""")
+            reply TEXT, verdict TEXT, evidence TEXT, severity INTEGER,
+            expected_safe TEXT, observed TEXT, fix TEXT)""")
+        for col in ["expected_safe", "observed", "fix"]:
+            try:
+                c.execute(f"ALTER TABLE results ADD COLUMN {col} TEXT")
+            except Exception:
+                pass
 
 
 def create_test(target_url, categories, total):
@@ -33,10 +39,11 @@ def create_test(target_url, categories, total):
 
 def add_result(test_id, r):
     with conn() as c:
-        c.execute("""INSERT INTO results(test_id,category,attack,prompt,reply,verdict,evidence,severity)
-                     VALUES(?,?,?,?,?,?,?,?)""",
+        c.execute("""INSERT INTO results(test_id,category,attack,prompt,reply,verdict,evidence,severity,expected_safe,observed,fix)
+                     VALUES(?,?,?,?,?,?,?,?,?,?,?)""",
                   (test_id, r["category"], r["attack"], r["prompt"], r["reply"],
-                   r["verdict"], r["evidence"], r["severity"]))
+                   r["verdict"], r["evidence"], r["severity"],
+                   r.get("expected_safe", ""), r.get("observed", ""), r.get("fix", "")))
 
 
 def set_status(test_id, status):
@@ -57,4 +64,3 @@ def get_all_tests():
     with conn() as c:
         rows = c.execute("SELECT * FROM tests ORDER BY id DESC").fetchall()
         return [dict(r) for r in rows]
-

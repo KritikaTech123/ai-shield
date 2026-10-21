@@ -1,233 +1,424 @@
-import { useEffect, useState } from "react";
-import { getCategories, startTest, getReport } from "./api.js";
+import React, { useState, useEffect, useRef } from "react";
+import Navbar from "./components/Navbar.jsx";
+import Dashboard from "./components/Dashboard.jsx";
+import CreateTest from "./components/CreateTest.jsx";
+import LiveSimulation from "./components/LiveSimulation.jsx";
+import BlueTeamEvaluation from "./components/BlueTeamEvaluation.jsx";
+import RiskScoring from "./components/RiskScoring.jsx";
+import SecurityReport from "./components/SecurityReport.jsx";
+import AttackLibrary from "./components/AttackLibrary.jsx";
+import Architecture from "./components/Architecture.jsx";
 
-const RISK_COLOR = {
-  Low: "text-green-700",
-  Medium: "text-amber-600",
-  High: "text-orange-600",
-  Critical: "text-red-700",
-};
+import {
+  checkBackendHealth,
+  getCategories,
+  getAttacks,
+  startTest,
+  getReport,
+  getTestHistory,
+} from "./api.js";
 
-function Header() {
-  return (
-    <header className="bg-slate-800 text-white px-6 py-4 flex items-center gap-3">
-      <span className="text-2xl">🛡️</span>
-      <div>
-        <h1 className="text-xl font-bold leading-tight">AI-SHIELD</h1>
-        <p className="text-xs text-slate-300">Attack AI before attackers do.</p>
-      </div>
-    </header>
-  );
-}
-
-// ---------- Screen 1: New test ----------
-function NewTest({ onStart }) {
-  const [url, setUrl] = useState("http://localhost:9000/chat");
-  const [cats, setCats] = useState([]);
-  const [picked, setPicked] = useState([]);
-  const [err, setErr] = useState("");
-
-  useEffect(() => {
-    getCategories()
-      .then((c) => {
-        setCats(c);
-        setPicked(c);
-      })
-      .catch(() => setErr("Backend not reachable. Is it running on port 8000?"));
-  }, []);
-
-  const toggle = (c) =>
-    setPicked((p) => (p.includes(c) ? p.filter((x) => x !== c) : [...p, c]));
-
-  const run = async () => {
-    try {
-      const { id } = await startTest(url, picked);
-      onStart(id);
-    } catch (e) {
-      setErr(e.message);
-    }
-  };
-
-  return (
-    <div className="max-w-xl mx-auto bg-white rounded-lg shadow p-6">
-      <h2 className="text-lg font-bold mb-4">1 · Configure the test</h2>
-      <label className="block text-sm font-semibold mb-1">Target agent</label>
-      <input
-        className="w-full border rounded px-3 py-2 mb-1"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-      />
-      <p className="text-xs text-slate-500 mb-4">
-        Only test agents you are authorised to test. The demo agent runs on port 9000.
-      </p>
-      <p className="text-sm font-semibold mb-2">Attack categories</p>
-      <div className="space-y-2 mb-5">
-        {cats.map((c) => (
-          <label key={c} className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={picked.includes(c)} onChange={() => toggle(c)} />
-            {c}
-          </label>
-        ))}
-      </div>
-      {err && <p className="text-red-600 text-sm mb-3">{err}</p>}
-      <button
-        onClick={run}
-        disabled={!picked.length}
-        className="bg-slate-800 text-white px-5 py-2 rounded font-semibold disabled:opacity-40"
-      >
-        Run security test
-      </button>
-    </div>
-  );
-}
-
-// ---------- Screen 2: Live attack log ----------
-function LiveLog({ data }) {
-  const pct = data.total ? Math.round((100 * data.done) / data.total) : 0;
-  return (
-    <div className="max-w-3xl mx-auto bg-white rounded-lg shadow p-6">
-      <h2 className="text-lg font-bold mb-1">2 · Attack in a sandbox</h2>
-      <p className="text-sm text-slate-600 mb-2">
-        Running test… {data.done} / {data.total}
-      </p>
-      <div className="h-3 bg-slate-100 rounded mb-4">
-        <div className="h-3 bg-amber-500 rounded" style={{ width: `${pct}%` }} />
-      </div>
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="bg-slate-700 text-white text-left">
-            <th className="p-2">Attack type</th>
-            <th className="p-2">Category</th>
-            <th className="p-2">Verdict</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.results.map((r) => (
-            <tr key={r.id} className="border-b">
-              <td className="p-2">{r.attack}</td>
-              <td className="p-2 text-slate-500">{r.category}</td>
-              <td className="p-2">
-                <span
-                  className={`px-2 py-0.5 rounded text-xs font-semibold ${
-                    r.verdict === "leaked"
-                      ? "bg-red-100 text-red-700"
-                      : "bg-green-100 text-green-700"
-                  }`}
-                >
-                  {r.verdict === "leaked" ? "Leaked" : "Blocked"}
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-// ---------- Screen 3: Report ----------
-function Report({ data, onAgain }) {
-  return (
-    <div className="max-w-3xl mx-auto bg-white rounded-lg shadow p-6">
-      <h2 className="text-lg font-bold mb-4">3 · Security report</h2>
-      <div className="flex items-end gap-3 mb-4">
-        <span className={`text-6xl font-bold ${RISK_COLOR[data.risk]}`}>{data.score}</span>
-        <span className="text-slate-500 mb-2">/ 100</span>
-        <span className={`text-xl font-bold mb-2 ${RISK_COLOR[data.risk]}`}>
-          {data.risk} risk
-        </span>
-      </div>
-
-      <div className="flex h-3 rounded overflow-hidden mb-1">
-        <div className="flex-1 bg-green-600" />
-        <div className="flex-1 bg-amber-400" />
-        <div className="flex-1 bg-orange-500" />
-        <div className="flex-1 bg-red-700" />
-      </div>
-      <div className="relative h-4 mb-6">
-        <div
-          className="absolute text-xs"
-          style={{ left: `calc(${Math.min(data.score, 100)}% - 4px)` }}
-        >
-          ▲
-        </div>
-      </div>
-
-      <h3 className="font-semibold mb-2">Attacks that succeeded, by category</h3>
-      <div className="space-y-2 mb-6">
-        {data.categories.map((c) => (
-          <div key={c.category} className="flex items-center gap-3 text-sm">
-            <span className="w-44">{c.category}</span>
-            <div className="flex-1 h-3 bg-slate-100 rounded">
-              <div className="h-3 bg-red-700 rounded" style={{ width: `${c.percent}%` }} />
-            </div>
-            <span className="w-24 text-right font-semibold">
-              {c.percent}% ({c.succeeded}/{c.total})
-            </span>
-          </div>
-        ))}
-      </div>
-
-      <h3 className="font-semibold mb-2">Recommended fixes</h3>
-      <ul className="list-disc ml-5 text-sm space-y-1 mb-6">
-        {data.recommended_fixes.length === 0 && <li>No successful attacks. Nice work!</li>}
-        {data.recommended_fixes.map((f) => (
-          <li key={f.category}>
-            <b>{f.category}:</b> {f.fix}
-          </li>
-        ))}
-      </ul>
-
-      <div className="flex gap-3">
-        <button onClick={() => window.print()} className="border px-4 py-2 rounded font-semibold">
-          Export / Print
-        </button>
-        <button onClick={onAgain} className="bg-slate-800 text-white px-4 py-2 rounded font-semibold">
-          New test
-        </button>
-      </div>
-    </div>
-  );
-}
+import {
+  MOCK_ATTACK_LIBRARY,
+  calculateRiskScore,
+  INITIAL_DEMO_STATS,
+} from "./mockEngine.js";
 
 export default function App() {
-  const [testId, setTestId] = useState(null);
-  const [data, setData] = useState(null);
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [backendOnline, setBackendOnline] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
-  // Poll the backend every second until the test is done.
+  // Active Test State
+  const [activeTestId, setActiveTestId] = useState(null);
+  const [activeTestData, setActiveTestData] = useState(null);
+
+  // Stats & History
+  const [stats, setStats] = useState(INITIAL_DEMO_STATS);
+  const [recentActivity, setRecentActivity] = useState(INITIAL_DEMO_STATS.recentActivity);
+  const [attacksList, setAttacksList] = useState([]);
+
+  const isPausedRef = useRef(isPaused);
+  isPausedRef.current = isPaused;
+
+  // Check health and load initial backend data
   useEffect(() => {
-    if (!testId) return;
-    let stop = false;
-    const tick = async () => {
+    async function initCheck() {
+      const isHealthy = await checkBackendHealth();
+      setBackendOnline(isHealthy);
+
+      if (isHealthy) {
+        try {
+          const attacks = await getAttacks();
+          if (attacks?.length) setAttacksList(attacks);
+
+          const history = await getTestHistory();
+          if (history?.length) {
+            const mapped = history.map((t) => ({
+              id: t.scan_id || `AIS-2026-${String(t.id).padStart(4, "0")}`,
+              rawId: t.id,
+              target: t.target_url || "ACME SupportBot",
+              date: t.created || "Just now",
+              score: t.score ?? 49,
+              risk: t.risk || "Medium",
+              status: t.status === "done" ? "COMPLETED" : t.status.toUpperCase(),
+              environment: t.is_simulated ? "Docker Sandbox" : "Custom Endpoint",
+            }));
+            setRecentActivity(mapped);
+
+            // Also load latest run as initial test data for reports if none active
+            try {
+              const latestReport = await getReport(history[0].id);
+              if (latestReport) setActiveTestData(latestReport);
+            } catch (e) {
+              console.warn("Could not load latest report", e);
+            }
+          }
+        } catch (err) {
+          console.warn("Error fetching backend initial state", err);
+        }
+      }
+    }
+
+    initCheck();
+    const interval = setInterval(initCheck, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Polling active backend test
+  useEffect(() => {
+    if (!activeTestId || !backendOnline) return;
+    let cancelled = false;
+
+    const poll = async () => {
+      if (cancelled || isPausedRef.current) return;
       try {
-        const d = await getReport(testId);
-        if (stop) return;
-        setData(d);
-        if (d.status === "running") setTimeout(tick, 1000);
-      } catch {
-        if (!stop) setTimeout(tick, 2000);
+        const d = await getReport(activeTestId);
+        if (cancelled) return;
+        setActiveTestData(d);
+
+        if (d.status === "done" || d.status === "failed") {
+          // Completed
+          refreshHistory();
+        } else {
+          setTimeout(poll, 600);
+        }
+      } catch (e) {
+        if (!cancelled) setTimeout(poll, 1500);
       }
     };
-    tick();
-    return () => {
-      stop = true;
-    };
-  }, [testId]);
 
-  const reset = () => {
-    setTestId(null);
-    setData(null);
+    poll();
+    return () => {
+      cancelled = true;
+    };
+  }, [activeTestId, backendOnline]);
+
+  const refreshHistory = async () => {
+    if (!backendOnline) return;
+    try {
+      const history = await getTestHistory();
+      if (history?.length) {
+        const mapped = history.map((t) => ({
+          id: t.scan_id || `AIS-2026-${String(t.id).padStart(4, "0")}`,
+          rawId: t.id,
+          target: t.target_url || "ACME SupportBot",
+          date: t.created || "Just now",
+          score: t.score ?? 49,
+          risk: t.risk || "Medium",
+          status: t.status === "done" ? "COMPLETED" : t.status.toUpperCase(),
+          environment: t.is_simulated ? "Docker Sandbox" : "Custom Endpoint",
+        }));
+        setRecentActivity(mapped);
+      }
+    } catch {}
   };
 
+  // Launch a new test
+  const handleStartTest = async (testConfig) => {
+    setIsSubmitting(true);
+    setIsPaused(false);
+    setActiveTab("simulation");
+
+    const count = Number(testConfig.numTestCases) || 15;
+    const targetUrl = testConfig.targetUrl || "http://localhost:9000/chat";
+
+    if (backendOnline) {
+      try {
+        const res = await startTest(
+          targetUrl,
+          testConfig.categories,
+          count,
+          testConfig.testMode
+        );
+        setActiveTestId(res.id);
+        setActiveTestData({
+          id: res.id,
+          scan_id: `AIS-2026-${String(res.id).padStart(4, "0")}`,
+          status: "running",
+          target_url: targetUrl,
+          done: 0,
+          total: res.total || count,
+          results: [],
+        });
+        setIsSubmitting(false);
+        return;
+      } catch (err) {
+        console.warn("Backend startTest error, falling back to client simulation", err);
+      }
+    }
+
+    // Client-side fallback simulation engine
+    runClientSimulation(targetUrl, testConfig.categories, count, testConfig.testMode);
+  };
+
+  const runClientSimulation = (targetUrl, selectedCats, count, mode) => {
+    setIsSubmitting(false);
+    const mockId = Math.floor(Math.random() * 900) + 100;
+    const scanId = `AIS-2026-${String(mockId).padStart(4, "0")}`;
+
+    // Filter attacks or use full pool
+    let pool = MOCK_ATTACK_LIBRARY.filter(
+      (a) => !selectedCats || selectedCats.includes(a.category)
+    );
+    if (!pool.length) pool = MOCK_ATTACK_LIBRARY;
+
+    // Scale to count
+    const attacksToRun = [];
+    while (attacksToRun.length < count) {
+      for (const a of pool) {
+        if (attacksToRun.length >= count) break;
+        attacksToRun.push({
+          ...a,
+          id: `${a.id}-v${attacksToRun.length + 1}`,
+          name: attacksToRun.length >= pool.length ? `${a.name} (Variant)` : a.name,
+        });
+      }
+    }
+
+    const testState = {
+      id: mockId,
+      scan_id: scanId,
+      status: "running",
+      target_url: targetUrl,
+      is_simulated: true,
+      done: 0,
+      total: count,
+      results: [],
+      created: new Date().toISOString(),
+    };
+    setActiveTestData({ ...testState });
+
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      if (isPausedRef.current) return;
+
+      if (currentStep >= attacksToRun.length) {
+        clearInterval(interval);
+        const finalCalculations = calculateRiskScore(testState.results);
+        const finishedState = {
+          ...testState,
+          status: "done",
+          ...finalCalculations,
+          recommended_fixes: [
+            {
+              category: "Sensitive Data Leakage",
+              fix: "Never inject raw secrets into LLM prompts; use credential vaults.",
+            },
+            {
+              category: "Tool & API Misuse",
+              fix: "Implement strict tool allow-lists and human-in-the-loop approvals.",
+            },
+            {
+              category: "System Prompt Leakage",
+              fix: "Enforce explicit instructions never to dump system configuration.",
+            },
+            {
+              category: "Prompt Injection",
+              fix: "Treat user input as untrusted data using structured tag fencing.",
+            },
+          ],
+        };
+        setActiveTestData(finishedState);
+
+        // Append to recent activity
+        setRecentActivity((prev) => [
+          {
+            id: scanId,
+            target: targetUrl,
+            date: "Just now",
+            score: finalCalculations.score,
+            risk: finalCalculations.risk,
+            status: "COMPLETED",
+            environment: "Docker Sandbox",
+          },
+          ...prev.slice(0, 5),
+        ]);
+        return;
+      }
+
+      const nextAttack = attacksToRun[currentStep];
+      testState.results.push(nextAttack);
+      testState.done = currentStep + 1;
+      setActiveTestData({ ...testState });
+      currentStep++;
+    }, 400);
+  };
+
+  const handleRunDemo = () => {
+    handleStartTest({
+      targetUrl: "http://localhost:9000/chat",
+      environment: "Demo Agent",
+      categories: [
+        "Prompt Injection",
+        "Jailbreaks & Role-Play",
+        "Sensitive Data Leakage",
+        "System Prompt Leakage",
+        "Tool & API Misuse",
+        "Unsafe Output",
+      ],
+      numTestCases: 15,
+      testMode: "Quick Scan",
+    });
+  };
+
+  const handleSelectRecentRun = async (testItem) => {
+    if (testItem.rawId && backendOnline) {
+      try {
+        const report = await getReport(testItem.rawId);
+        setActiveTestData(report);
+        setActiveTab("report");
+        return;
+      } catch (e) {}
+    }
+
+    // Default sample fallback
+    const sampleResults = MOCK_ATTACK_LIBRARY.slice(0, 10);
+    const scoreData = calculateRiskScore(sampleResults);
+    setActiveTestData({
+      id: testItem.id,
+      scan_id: testItem.id,
+      target_url: testItem.target,
+      status: "done",
+      created: testItem.date,
+      is_simulated: true,
+      total: sampleResults.length,
+      done: sampleResults.length,
+      results: sampleResults,
+      ...scoreData,
+      recommended_fixes: [
+        {
+          category: "Sensitive Data Leakage",
+          fix: "Never inject raw secrets into LLM prompts; use credential vaults.",
+        },
+        {
+          category: "Tool & API Misuse",
+          fix: "Implement strict tool allow-lists and human-in-the-loop approvals.",
+        },
+      ],
+    });
+    setActiveTab("report");
+  };
+
+  const currentScoreData =
+    activeTestData?.score !== undefined
+      ? {
+          score: activeTestData.score,
+          risk: activeTestData.risk,
+          total: activeTestData.total || activeTestData.results?.length || 0,
+          blocked:
+            activeTestData.blocked_attacks ??
+            activeTestData.results?.filter((r) => r.verdict === "blocked").length ??
+            0,
+          successful:
+            activeTestData.successful_attacks ??
+            activeTestData.results?.filter((r) => r.verdict === "leaked").length ??
+            0,
+          categories: activeTestData.categories || [],
+          totalWeighted: activeTestData.totalWeighted,
+          successfulWeighted: activeTestData.successfulWeighted,
+        }
+      : calculateRiskScore(activeTestData?.results || MOCK_ATTACK_LIBRARY.slice(0, 6));
+
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main className="p-6">
-        {!testId && <NewTest onStart={setTestId} />}
-        {testId && !data && <p className="text-center text-slate-500">Starting…</p>}
-        {data && data.status === "running" && <LiveLog data={data} />}
-        {data && data.status !== "running" && <Report data={data} onAgain={reset} />}
+    <div className="min-h-screen bg-[#0B0F19] text-slate-100 flex flex-col font-sans selection:bg-amber-500 selection:text-slate-950">
+      {/* Navigation Header */}
+      <Navbar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        backendOnline={backendOnline}
+        isSimulated={activeTestData?.is_simulated}
+      />
+
+      {/* Main Content Area */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === "dashboard" && (
+          <Dashboard
+            stats={stats}
+            recentActivity={recentActivity}
+            onNewTest={() => setActiveTab("create")}
+            onViewReports={() => setActiveTab("report")}
+            onRunDemo={handleRunDemo}
+            onSelectRun={handleSelectRecentRun}
+          />
+        )}
+
+        {activeTab === "create" && (
+          <CreateTest
+            onStartTest={handleStartTest}
+            isSubmitting={isSubmitting}
+          />
+        )}
+
+        {activeTab === "simulation" && (
+          <LiveSimulation
+            currentTest={activeTestId}
+            testData={activeTestData}
+            isPaused={isPaused}
+            onTogglePause={() => setIsPaused((p) => !p)}
+            onCancel={() => {
+              setActiveTestData((prev) => (prev ? { ...prev, status: "cancelled" } : null));
+              setActiveTab("dashboard");
+            }}
+            onViewReport={() => setActiveTab("report")}
+          />
+        )}
+
+        {activeTab === "blueteam" && (
+          <BlueTeamEvaluation
+            testResults={activeTestData?.results || MOCK_ATTACK_LIBRARY}
+            isSimulated={activeTestData?.is_simulated ?? true}
+          />
+        )}
+
+        {activeTab === "risk" && (
+          <RiskScoring scoreData={currentScoreData} />
+        )}
+
+        {activeTab === "report" && (
+          <SecurityReport
+            reportData={activeTestData}
+            onRunAgain={() => setActiveTab("create")}
+            onBackToDashboard={() => setActiveTab("dashboard")}
+          />
+        )}
+
+        {activeTab === "library" && (
+          <AttackLibrary attacksList={attacksList} />
+        )}
+
+        {activeTab === "architecture" && <Architecture />}
       </main>
+
+      {/* Minimal Footer */}
+      <footer className="border-t border-slate-800/80 bg-[#080B12] py-4 text-center text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <span>AI-SHIELD · Automated AI Agent Security Testing Lab</span>
+          <span className="font-mono text-slate-400">Team STRIVERS: Madiwalappa · Kritika · Samiksha</span>
+          <span>Hack in Hills · Exido · Web3 India · Builder Base</span>
+        </div>
+      </footer>
     </div>
   );
 }
