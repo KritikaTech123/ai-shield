@@ -1,0 +1,164 @@
+/* Accessible text tones preserve the warm visual palette across light surfaces. */
+.landing .hero h1>span{color:#e25c30}
+.landing .hero-description,.landing .hero-assurances,.landing .stack-logos,.landing .stack-bottom,.landing .section-heading>p,.landing .center-heading>p,.landing .surface-card-top>span,.landing .surface-label,.landing .surface-card>p,.landing .surface-foot,.landing .step-top>span,.landing .step>p,.landing .step>small,.landing .workflow-note,.landing .why-copy>p,.landing .why-checks small,.landing .quote-role,.landing .quote-person small,.landing .testimonial-note,.landing .plan-label,.landing .price-card>p,.landing .price>span,.landing .price-context,.landing .plan-includes,.landing .price-card li,.landing .pricing-note,.landing .faq-intro>p,.landing .faq-list details>p,.landing .footer-brand>p,.landing .footer-status,.landing .footer-column h4,.landing .footer-column a,.landing .footer-column button,.landing .footer-bottom{color:#686f5e}
+.landing .surface-card>p{font-size:13px;line-height:1.8}
+.landing .surface-label{font-size:8px}
+.landing .surface-link{font-size:11px;color:#626d55}
+.landing .section-heading>p{font-size:14px}
+.landing .hero-assurances{font-size:11px}
+.landing .surface-card-top>span{font-size:10px}
+.landing .step>p{font-size:13px}
+.landing .step>small{font-size:8px}
+.landing .why-copy>p{font-size:14px}
+.landing .why-checks small{font-size:11px}
+.landing .testimonial-note{font-size:10px}
+.landing .quote-role{font-size:9px}
+.landing .quote-person small{font-size:9px}
+.landing .quote-person strong{font-size:10px}
+.landing .role-avatar{color:#526144}
+.landing .risk-number>em{color:#506d52}
+.landing .trust-card-header>span:first-child,.landing .trust-metric>span,.landing .trust-axis,.landing .trust-card-footer,.landing .trust-sticker>div{color:#687650}
+.landing .trust-metric em{color:#71804e}
+.landing .trust-sticker strong{color:#566741}
+.landing .badge-green{color:#526e43}
+.landing .billing-toggle button{color:#5b694b}
+.landing .billing-toggle button>span{color:#4d613a}
+.landing .popular-label{color:#633b21}
+.landing .plan-label{font-size:9px}
+.landing .price-card>p{font-size:12px}
+.landing .price-context{font-size:10px}
+.landing .plan-includes{font-size:10px}
+.landing .price-card li{font-size:12px}
+.landing .price-card .button{font-size:11px}
+.landing .pricing-note{font-size:10px}
+.landing .faq-list summary{font-size:13px}
+.landing .faq-list details>p{font-size:12px}
+.landing .faq-list details[open] summary{color:#8d613a}
+.landing .footer-column h4{font-size:9px}
+.landing .footer-column a,.landing .footer-column button{font-size:12px}
+.landing .footer-brand>p{font-size:12px}
+.landing .footer-status{font-size:10px}
+.landing .footer-bottom,.landing .footer-bottom button{font-size:10px}
+.landing .final-cta .eyebrow,.landing .final-cta p,.landing .final-cta small{color:#806545}
+.landing .final-cta h2>span{color:#a86c3f}
+.landing .final-cta small{font-size:9px}
+.landing .stack-section>p{color:#737b65;font-size:9px}
+.landing .stack-bottom{font-size:10px}
+.landing .button-orange,.auth-shell .button-orange,.docs-page .button-orange{background:#c64b25;border-color:#c64b25;color:#fff}
+.landing .button-orange:hover,.auth-shell .button-orange:hover,.docs-page .button-orange:hover{background:#b64120;border-color:#b64120}
+.landing .form-note,.landing .modal-heading p,.landing .contact-success p,.landing .legal-content p{color:#69735e}
+
+.app-shell[data-theme=light]{--muted:#65715b}
+.app-shell[data-theme=light] .button-orange{background:#c64b25;border-color:#c64b25;color:#fff}
+.app-shell[data-theme=light] .button-orange:hover{background:#b64120;border-color:#b64120}
+.app-shell[data-theme=light] .sidebar-nav>button.active{color:#87592f}
+.app-shell[data-theme=light] .sidebar-nav>button.active small{color:#76542e}
+.app-shell[data-theme=light] .sidebar-nav .new-label{color:#786337}
+.app-shell[data-theme=light] .sidebar-upgrade>span,.app-shell[data-theme=light] .sidebar-upgrade>p,.app-shell[data-theme=light] .sidebar-upgrade>button{color:#6b6745}
+.app-shell[data-theme=light] .sidebar-upgrade h3{color:#5d633e}
+.app-shell[data-theme=light] .demo-pill{color:#546a3c}
+.app-shell[data-theme=light] .user-avatar,.app-shell[data-theme=light] .settings-avatar{color:#616a41}
+.app-shell[data-theme=light] .demo-notice,.app-shell[data-theme=light] .demo-notice p,.app-shell[data-theme=light] .demo-notice p>span,.app-shell[data-theme=light] .demo-notice a,.app-shell[data-theme=light] .sandbox-callout strong,.app-shell[data-theme=light] .sandbox-callout span{color:#78643d}
+.app-shell[data-theme=light] .kpi-value>span,.app-shell[data-theme=light] .blocked-cell>span{color:#707b64}
+.app-shell[data-theme=light] .trend-good{color:#536e42}
+.app-shell[data-theme=light] .trend-neutral{color:#7f632c}
+.app-shell[data-theme=light] .status-complete,.app-shell[data-theme=light] .risk-low,.app-shell[data-theme=light] .risk-low b,.app-shell[data-theme=light] .badge-green,.app-shell[data-theme=light] .severity-tag.severity-low{color:#506e3f}
+.app-shell[data-theme=light] .risk-medium,.app-shell[data-theme=light] .risk-medium b,.app-shell[data-theme=light] .severity-tag.severity-medium{color:#80662b}
+.app-shell[data-theme=light] .risk-high,.app-shell[data-theme=light] .risk-high b,.app-shell[data-theme=light] .severity-tag.severity-high,.app-shell[data-theme=light] .badge-orange{color:#91602e}
+.app-shell[data-theme=light] .risk-critical,.app-shell[data-theme=light] .risk-critical b,.app-shell[data-theme=light] .severity-tag.severity-critical{color:#9a503a}
+.app-shell[data-theme=light] .badge-neutral{color:#616d51}
+.app-shell[data-theme=light] .report-score,.app-shell[data-theme=light] .report-score strong>small{color:#876b30}
+.app-shell[data-theme=light] .report-summary>.report-score{color:#876b30}
+.app-shell[data-theme=light] .orange-text{color:#976534}
+.app-shell[data-theme=light] .report-tabs>button.active,.app-shell[data-theme=light] .attack-fieldset legend>button,.app-shell[data-theme=light] .delete-link{color:#8e6639}
+.app-shell[data-theme=light] .form-stack .attack-checkboxes>label.checked,.app-shell[data-theme=light] .form-stack .attack-checkboxes small{color:#806936}
+.app-shell[data-theme=light] .remediation h4,.app-shell[data-theme=light] .library-categories>button>span,.app-shell[data-theme=light] .probe-number{color:#647847}
+.app-shell[data-theme=light] .run-log>div.done{color:#5b7547}
+.app-shell[data-theme=light] .theme-options>button.selected{color:#866336}
+.app-shell[data-theme=light] .delete-warning{color:#8a6039}
+.app-shell .sidebar-nav>button,.app-shell .sidebar-nav>a{font-size:12px}
+.app-shell .workspace-switcher strong{font-size:11px}
+.app-shell .workspace-switcher small{font-size:9px}
+.app-shell .sidebar-group-label{font-size:8px}
+.app-shell .dashboard-heading p{font-size:12px}
+.app-shell .kpi-label{font-size:11px}
+.app-shell .kpi-trend>span:last-child,.app-shell .kpi-card>p{font-size:8px}
+.app-shell .dash-card-heading h3{font-size:13px}
+.app-shell .dash-card-heading p{font-size:10px}
+.app-shell .chart-footnote{font-size:8px}
+.app-shell .filter-select select{font-size:11px}
+.app-shell .data-table td{font-size:10px}
+.app-shell .table-agent,.app-shell .tests-compact .table-agent{font-size:11px}
+.app-shell .status-complete{font-size:9px}
+.app-shell .risk-badge>span{font-size:8px}
+.app-shell .table-controls select,.app-shell .search-input input{font-size:11px}
+.app-shell .report-filters select{font-size:10px}
+.app-shell .form-stack label small{font-size:10px}
+
+.auth-shell .auth-top-links,.auth-shell .auth-form-wrap>.eyebrow,.auth-shell .auth-form-wrap>p,.auth-shell .auth-form label,.auth-shell .auth-form label>small,.auth-shell .auth-divider,.auth-shell .auth-bottom{color:#657356}
+.auth-shell .auth-switch>button{color:#895f32}
+.auth-shell .auth-form-wrap>.button-outline{color:#596d42}
+.auth-shell .auth-form-wrap>.auth-fine-print{color:#6b775d}
+.auth-shell .auth-form label{font-size:12px}
+.auth-shell .auth-form input{font-size:13px}
+.auth-shell .auth-form-wrap>.auth-fine-print{font-size:10px}
+.auth-shell .auth-top-links,.auth-shell .auth-switch,.auth-shell .auth-switch>button{font-size:11px}
+.auth-shell .auth-bottom{font-size:10px}
+
+.docs-page .docs-header-label,.docs-page .docs-sidebar>span,.docs-page .docs-sidebar>nav>a,.docs-page .docs-sidebar>div,.docs-page .docs-sidebar>div>a,.docs-page .docs-content>.eyebrow,.docs-page .docs-intro,.docs-page .docs-section-number,.docs-page .docs-content>section>p,.docs-page .docs-steps p,.docs-page .docs-card-grid p,.docs-page .docs-surface-list>a>span,.docs-page .docs-surface-list p,.docs-page .docs-weight-grid>div>span,.docs-page .docs-weight-grid strong>small,.docs-page .docs-weight-grid p,.docs-page .docs-checklist>li,.docs-page .docs-footer{color:#687752}
+.docs-page .docs-callout strong,.docs-page .docs-callout p{color:#786239}
+.docs-page .docs-callout.neutral strong,.docs-page .docs-callout.neutral p{color:#5b7143}
+.docs-page .docs-weight-grid strong{color:#627e3e}
+.docs-page .docs-checklist strong{color:#526c37}
+.docs-page .docs-content .text-link{color:#896236}
+.docs-page .docs-steps>li>span{color:#627b41}
+.docs-page .docs-sidebar>nav>a{font-size:12px}
+.docs-page .docs-content>section>p{font-size:14px}
+.docs-page .docs-callout p,.docs-page .docs-steps p,.docs-page .docs-card-grid p,.docs-page .docs-checklist>li{font-size:12px}
+.docs-page .docs-surface-list p{font-size:11px}
+.docs-page .docs-footer{font-size:10px}
+
+@media(max-width:700px){
+.landing .hero-assurances{font-size:9px}
+.landing .surface-label{font-size:7px}
+.landing .surface-card>p{font-size:11px;min-height:94px}
+.landing .surface-card-top>span{font-size:8px}
+.landing .surface-link{font-size:9px}
+.landing .section-heading>p{font-size:12px}
+.landing .step>p{font-size:12px}
+.landing .step>small{font-size:7px}
+.landing .why-copy>p{font-size:13px}
+.landing .stack-section>p{font-size:7px}
+.landing .stack-bottom{font-size:8px}
+.landing .ring-two{width:calc(100% + 12px);height:auto;aspect-ratio:1}
+.landing .ring-one{width:86%;height:auto;aspect-ratio:1}
+.landing .footer-bottom,.landing .footer-bottom button{font-size:9px}
+.app-shell .dashboard-heading p{font-size:11px}
+.app-shell .kpi-label{font-size:10px}
+.app-shell .kpi-trend>span:last-child,.app-shell .kpi-card>p{font-size:7px}
+.app-shell .dash-card-heading h3{font-size:12px}
+.app-shell .filter-select select{font-size:10px}
+.app-shell .dashboard-bottom-note{font-size:8px}
+.app-shell .form-stack input,.app-shell .form-stack select,.app-shell .form-stack textarea,.auth-shell .auth-form input{font-size:16px}
+.app-shell .form-stack .attack-checkboxes input{font-size:12px}
+.docs-page .docs-content>section>p{font-size:13px}
+.docs-page .docs-callout p,.docs-page .docs-steps p,.docs-page .docs-card-grid p,.docs-page .docs-checklist>li{font-size:12px}
+.auth-shell .auth-top-links,.auth-shell .auth-bottom{font-size:9px}
+}
+@media(max-width:360px){.landing .hero-actions{flex-direction:column;align-items:stretch}.landing .hero-assurances{gap:12px;font-size:8px}.landing .hero h1{font-size:46px}.app-shell .demo-pill{display:none}.app-shell .kpi-sparkline{width:36px}.app-shell .kpi-value>strong{font-size:26px}}
+.app-shell .table-scroll{position:relative;max-width:100%}
+.app-shell[data-theme=light] .kpi-value>span,.app-shell[data-theme=light] .blocked-cell>span{color:#647157}
+.docs-page .docs-weight-grid>div>span,.docs-page .docs-weight-grid strong>small,.docs-page .docs-weight-grid p{color:#5b6c46}
+.docs-page .docs-weight-grid strong>small{font-size:9px}
+.docs-page .docs-weight-grid p{font-size:10px}
+.docs-page .docs-sidebar,.docs-page .docs-content{min-width:0}
+.app-shell[data-theme=light] .library-categories>button.active{color:#7e6136}
+@media(max-width:600px){.docs-page .docs-layout{grid-template-columns:minmax(0,1fr)}}
+.app-shell[data-theme=dark] .sidebar-upgrade>span{color:#c5b990}
+.app-shell[data-theme=dark] .demo-notice,.app-shell[data-theme=dark] .demo-notice a,.app-shell[data-theme=dark] .demo-saved{color:#d0ba8b}
+.app-shell[data-theme=dark] .risk-low{color:#b0c891}
+.app-shell[data-theme=dark] .risk-medium{color:#d3bf83}
+.app-shell[data-theme=dark] .risk-high{color:#d8b080}
+.app-shell[data-theme=dark] .risk-critical{color:#dca18b}
+
+

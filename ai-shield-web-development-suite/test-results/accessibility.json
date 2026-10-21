@@ -1,0 +1,13 @@
+{
+  "/": [],
+  "/dashboard": [],
+  "/dashboard?view=agents": [],
+  "/dashboard?view=tests": [],
+  "/dashboard?view=findings": [],
+  "/dashboard?view=reports": [],
+  "/dashboard?view=library": [],
+  "/dashboard?view=settings": [],
+  "/login?mode=signup": [],
+  "/docs": [],
+  "/dashboard#dark": []
+}
