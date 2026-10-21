@@ -51,3 +51,10 @@ def get_test(test_id):
             return None
         rows = c.execute("SELECT * FROM results WHERE test_id=? ORDER BY id", (test_id,)).fetchall()
         return dict(t), [dict(r) for r in rows]
+
+
+def get_all_tests():
+    with conn() as c:
+        rows = c.execute("SELECT * FROM tests ORDER BY id DESC").fetchall()
+        return [dict(r) for r in rows]
+

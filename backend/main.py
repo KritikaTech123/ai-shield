@@ -89,3 +89,38 @@ def report(test_id: int):
         for c in data.get("categories", []) if c["succeeded"] > 0
     ]
     return data
+
+
+@app.get("/tests")
+def list_tests():
+    raw_tests = db.get_all_tests()
+    out = []
+    for t in raw_tests:
+        found = db.get_test(t["id"])
+        item = dict(t)
+        if isinstance(item.get("categories"), str):
+            try:
+                item["categories"] = json.loads(item["categories"])
+            except Exception:
+                pass
+        if found:
+            _, rows = found
+            item["done"] = len(rows)
+            if rows:
+                item.update(scoring.compute(rows))
+            else:
+                item["score"] = 0
+                item["risk"] = "Low"
+        out.append(item)
+    return out
+
+
+@app.get("/attacks")
+def get_attack_library():
+    return ATTACKS
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
